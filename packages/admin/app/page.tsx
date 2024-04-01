@@ -6,7 +6,7 @@ import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 
-const Dev: NextPage = () => {
+const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
 
   return (
@@ -68,4 +68,4 @@ const Dev: NextPage = () => {
   );
 };
 
-export default Dev;
+export default Home;
