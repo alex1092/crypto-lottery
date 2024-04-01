@@ -12,17 +12,14 @@ contract Lottery is Ownable {
     address[] public winners;
 
     constructor() Ownable() {
-        // Add the contract owner as the first player with 1 ticket
         tickets[msg.sender] = 1;
         players.push(msg.sender);
     }
 
     function enter() public payable {
-        // Calculate the number of tickets based on the sent Ether
         uint256 numTickets = msg.value / 0.001 ether;
         require(numTickets > 0, "You must send at least 0.001 ether");
 
-        // Add the player and their tickets to the mapping and players array
         tickets[msg.sender] += numTickets;
         players.push(msg.sender);
     }
@@ -32,7 +29,6 @@ contract Lottery is Ownable {
     }
 
     function random() private view returns (uint) {
-        // Use the total number of tickets as part of the random seed
         return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players.length, getTotalTickets())));
     }
 
@@ -42,6 +38,18 @@ contract Lottery is Ownable {
             total += tickets[players[i]];
         }
         return total;
+    }
+
+    function getMyTickets() public view returns (uint256) {
+        return tickets[msg.sender];
+    }
+
+    function getMyTicketValue() public view returns (uint256) {
+        return tickets[msg.sender] * 0.001 ether;
+    }
+
+    function getTotalPrizePool() public view returns (uint256) {
+        return getTotalTickets() * 0.001 ether;
     }
 
     function pickWinner() public onlyOwner {
@@ -82,9 +90,6 @@ contract Lottery is Ownable {
     function getWinners() public view returns (address[] memory) {
         return winners;
     }
-
-
-    
 
     event WinnerPicked(address winner, uint256 reward);
 }

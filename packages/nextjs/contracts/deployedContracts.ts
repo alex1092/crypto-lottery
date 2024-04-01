@@ -173,7 +173,7 @@ const deployedContracts = {
   },
   84532: {
     Lottery: {
-      address: "0x168c318Be04a15673a2Eac04A14c093b9F536A4E",
+      address: "0x9D74e731d553280a3D0Cb988355f555C4eeb99Ee",
       abi: [
         {
           inputs: [],
@@ -227,12 +227,51 @@ const deployedContracts = {
         },
         {
           inputs: [],
+          name: "getMyTicketValue",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getMyTickets",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
           name: "getPlayers",
           outputs: [
             {
               internalType: "address[]",
               name: "",
               type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "getTotalPrizePool",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
