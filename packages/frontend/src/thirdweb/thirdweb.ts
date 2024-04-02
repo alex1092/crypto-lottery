@@ -4,5 +4,5 @@
 // export them from here and import in server components so that they are tagged with "use client" directive
 
 export { ThirdwebProvider, ConnectButton} from 'thirdweb/react';
-export { getContract } from "thirdweb";
+export { getContract, readContract } from "thirdweb";
 
