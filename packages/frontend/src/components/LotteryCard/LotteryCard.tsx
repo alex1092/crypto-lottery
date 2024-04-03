@@ -8,52 +8,51 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { utils } from "web3";
-
 import {
-  LotteryContract,
-  getCurrentTicketsOfAddressTotal,
   getTotalPrizePool,
   getTotalTickets,
 } from "@/thirdweb/contract-connect";
-
 import { useActiveAccount } from "thirdweb/react";
+import { useCallback, useEffect, useState } from "react";
 
-import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { ActiveAccountContent } from "./ActiveAccountContent";
+import { BuyTicketForm } from "./BuyTicketForm";
+import { TransactionReceipt } from "thirdweb/transaction";
 
 const LotteryCard = () => {
   const [totalTickets, setTotalTickets] = useState(0);
   const [totalPrizePool, setTotalPrizePool] = useState("");
-  const [usersTotalTickets, setUsersTotalTickets] = useState(0);
+  const [receipt, setReceipt] = useState<TransactionReceipt | null>(null);
+
   const activeAccount = useActiveAccount();
 
-  useEffect(() => {
-    if (activeAccount) {
-      getCurrentTicketsOfAddressTotal().then((res) => {
-        setUsersTotalTickets(Number(res));
-      });
-    }
-  }, [activeAccount]);
-
-  useEffect(() => {
-    const getTickets = async () => {
+  const getTickets = useCallback(async () => {
+    try {
       const totalTickets = await getTotalTickets();
       setTotalTickets(Number(totalTickets));
-    };
-
-    const getPrizePool = async () => {
-      const totalPrizePool = await getTotalPrizePool();
-      setTotalPrizePool(utils.fromWei(totalPrizePool, "ether"));
-    };
-
-    getTickets();
-    getPrizePool();
+    } catch (error) {
+      console.error("Error getting total tickets:", error);
+    }
   }, []);
 
-  console.log(totalTickets);
+  const getPrizePool = useCallback(async () => {
+    try {
+      const totalPrizePool = await getTotalPrizePool();
+      setTotalPrizePool(utils.fromWei(totalPrizePool, "ether"));
+    } catch (error) {
+      console.error("Error getting total prize pool:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getTickets();
+    getPrizePool();
+  }, [getTickets, getPrizePool, receipt]);
+
+  const handleReceipt = (receipt: TransactionReceipt) => {
+    setReceipt(receipt);
+  };
 
   return (
     <Card>
@@ -65,13 +64,22 @@ const LotteryCard = () => {
         <p>Total Tickets: {totalTickets}</p>
         <p>Total Prize: {totalPrizePool}</p>
 
-        {activeAccount && <p>Your tickets: {usersTotalTickets}</p>}
+        {activeAccount && (
+          <ActiveAccountContent
+            totalTickets={totalTickets}
+            address={activeAccount.address}
+          />
+        )}
       </CardContent>
       <CardFooter>
         <div className="flex flex-col gap-4">
           <p> Tickets are 0.001 ETH each </p>
-          <Input type="number" placeholder="Eth amount" />
-          <Button>Buy Tickets</Button>
+          {activeAccount && (
+            <BuyTicketForm
+              address={activeAccount.address}
+              onReceipt={handleReceipt}
+            />
+          )}
         </div>
       </CardFooter>
     </Card>

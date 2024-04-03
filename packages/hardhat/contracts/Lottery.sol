@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.8.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -11,85 +11,72 @@ contract Lottery is Ownable {
     address[] public players;
     address[] public winners;
 
-    constructor() Ownable() {
+    uint256 public lotteryStartTime;
+    uint256 public lotteryDuration;
+    uint256 public constant TICKET_PRICE = 0.001 ether;
+    uint256 public constant MANAGER_REWARD_PERCENTAGE = 2; // 2% of the prize pool
+
+    constructor(
+        uint256 _lotteryDuration
+    ) Ownable() {
+        lotteryStartTime = block.timestamp;
+        lotteryDuration = _lotteryDuration;
+
         tickets[msg.sender] = 1;
         players.push(msg.sender);
     }
 
-    function enter() public payable {
-        uint256 numTickets = msg.value / 0.001 ether;
-        require(numTickets > 0, "You must send at least 0.001 ether");
-
-        tickets[msg.sender] += numTickets;
+    function buyTicket(uint256 amount) public payable {
+        require(amount >= TICKET_PRICE, "You must send at least 0.001 ether");
+        uint256 numTickets = amount.div(TICKET_PRICE);
+        tickets[msg.sender] = tickets[msg.sender].add(numTickets);
         players.push(msg.sender);
-    }
-
-    function getPlayers() public view returns (address[] memory) {
-        return players;
-    }
-
-    function random() private view returns (uint) {
-        return uint(keccak256(abi.encodePacked(block.difficulty, block.timestamp, players.length, getTotalTickets())));
     }
 
     function getTotalTickets() public view returns (uint256) {
-        uint256 total = 0;
-        for (uint256 i = 0; i < players.length; i++) {
-            total += tickets[players[i]];
-        }
-        return total;
+        return players.length;
     }
 
-    function getMyTickets() public view returns (uint256) {
-        return tickets[msg.sender];
-    }
-
-    function getMyTicketValue() public view returns (uint256) {
-        return tickets[msg.sender] * 0.001 ether;
+    function getMyTicketInfo(address player) public view returns (uint256, uint256) {
+        uint256 numTickets = tickets[player];
+        uint256 ticketValue = numTickets * TICKET_PRICE;
+        return (numTickets, ticketValue);
     }
 
     function getTotalPrizePool() public view returns (uint256) {
-        return getTotalTickets() * 0.001 ether;
+        return getTotalTickets() * TICKET_PRICE;
     }
 
-    function pickWinner() public onlyOwner {
-        require(getTotalTickets() > 0, "No tickets have been purchased yet");
+ function pickWinner() public {
+    require(block.timestamp >= lotteryStartTime + lotteryDuration, "Lottery is still ongoing");
+    require(getTotalTickets() > 0, "No tickets have been purchased yet");
 
-        uint256 totalTickets = getTotalTickets();
-        uint256 winningTicket = random() % totalTickets;
+    uint256 winningTicket = uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, players))) % getTotalTickets();
+    address winner = players[winningTicket];
 
-        uint256 currentTicket = 0;
-        address winner;
-        uint256 winnerReward;
-        uint256 managerReward;
+    uint256 managerReward = getTotalPrizePool().mul(MANAGER_REWARD_PERCENTAGE).div(100);
+    uint256 winnerReward = getTotalPrizePool().sub(managerReward);
 
-        for (uint256 i = 0; i < players.length; i++) {
-            currentTicket = currentTicket.add(tickets[players[i]]);
-            if (currentTicket > winningTicket) {
-                winner = players[i];
-                break;
-            }
-        }
+    (bool success) = payable(winner).send(winnerReward);
+    require(success, "Transfer to winner failed");
 
-        managerReward = address(this).balance / 50;
-        winnerReward = address(this).balance - managerReward;
+    success = payable(owner()).send(managerReward);
+    require(success, "Transfer to owner failed");
 
-        (bool success) = payable(winner).send(winnerReward);
-        require(success, "Transfer to winner failed");
+    emit WinnerPicked(winner, winnerReward);
 
-        success = payable(owner()).send(managerReward);
-        require(success, "Transfer to owner failed");
-
-        emit WinnerPicked(winner, winnerReward);
-
-        delete players;
-        players.push(msg.sender);
-        winners.push(winner);
+    while (players.length > 0) {
+        players.pop();
     }
+    players.push(msg.sender);
+    winners.push(winner);
+
+    lotteryStartTime = block.timestamp;
+}
 
     function getWinners() public view returns (address[] memory) {
         return winners;
     }
 
-    event WinnerPicked(address winner, uint256 reward);
+    event WinnerPicked(address indexed winner, uint256 reward);
 }
