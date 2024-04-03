@@ -26,6 +26,7 @@
     "next:check-types:admin": "yarn workspace admin check-types",
     "next:format:admin": "yarn workspace admin format",
     "next:lint:admin": "yarn workspace admin lint",
+    "next:lint:frontend": "yarn workspace frontend lint",
     "precommit": "lint-staged",
     "prepare": "install-self-peers -- --ignore-scripts",
     "start:admin": "yarn workspace admin dev --port 3339",

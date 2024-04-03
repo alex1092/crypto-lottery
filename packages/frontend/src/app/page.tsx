@@ -12,14 +12,8 @@ const Home = () => {
         </div>
       </nav>
 
-      <main className="flex h-full flex-row justify-around items-center">
-        <div>
-          <h1>Home Page</h1>
-          <p>Just a quick home page</p>
-        </div>
-        <div>
-          <LotteryCard />
-        </div>
+      <main className="flex h-full justify-center items-center">
+        <LotteryCard />
       </main>
     </div>
   );

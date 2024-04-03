@@ -43,7 +43,7 @@ contract Lottery is Ownable {
 	}
 
 	function getTotalTickets() public view returns (uint256) {
-		return players.length;
+		return totalTickets;
 	}
 
 	function getMyTicketInfo(address player) public view returns (uint256) {

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { utils } from "web3";
 import {
+  LotteryContract,
   getTotalPrizePool,
   getTotalTickets,
 } from "@/thirdweb/contract-connect";
@@ -57,8 +58,11 @@ const LotteryCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>Crypto Lottery</CardTitle>
+        <CardDescription>
+          A fully decentralized and fair lottery game. Buy a ticket and win big
+          prizes.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <p>Total Tickets: {totalTickets}</p>

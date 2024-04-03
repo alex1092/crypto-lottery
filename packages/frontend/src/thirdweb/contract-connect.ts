@@ -2,7 +2,7 @@ import { getContract, prepareContractCall, toWei } from "thirdweb";
 import { baseSepolia } from "thirdweb/chains";
 import { client } from "./client";
 
-const contractAddress = "0x7B7525E6E1f0417fcE940f97bcee9969671475F1"
+const contractAddress = "0xA3bd04A6bbc929a0ea7Df2ED821d73dbA529316A"
  
 export const LotteryContract = getContract({
   // the client you have created via `createThirdwebClient()`
@@ -35,10 +35,26 @@ export const getTotalPrizePool = async () => {
   });
 }
 
+export const getWinners = async () => {
+  return await readContract({
+    contract: LotteryContract,
+    method: "function getWinners() public view returns (address[])",
+    params: [],
+  });
+}
+
+export const withdrawPrize = async (address: string) => {
+  return await readContract({
+    contract: LotteryContract,
+    method: "function withdraw(address _to) public",
+    params: [address],
+  });
+}
+
 export const getTicketInfoForAddress = async (player: string) => {
   return await readContract({
     contract: LotteryContract,
-    method: "function getMyTicketInfo(address player) public view returns (uint256, uint256)", // Update the method signature
+    method: "function getMyTicketInfo(address player) public view returns (uint256)",
     params: [player],
   });
 }
