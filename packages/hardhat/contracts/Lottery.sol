@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity >=0.8.0 <0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -26,11 +26,6 @@ contract Lottery is Ownable {
 	constructor(uint256 _lotteryDuration) payable Ownable() {
 		lotteryStartTime = block.timestamp;
 		lotteryDuration = _lotteryDuration;
-
-		// tickets[owner()] = 1;
-		// players.push(owner());
-		// totalTickets = 1;
-
 		emit LotteryStarted(block.timestamp, _lotteryDuration);
 	}
 

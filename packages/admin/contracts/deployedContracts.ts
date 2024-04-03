@@ -293,7 +293,7 @@ const deployedContracts = {
   },
   84532: {
     Lottery: {
-      address: "0x22F523D3900C8F9B108e3f39448A5837e80180e1",
+      address: "0xA3bd04A6bbc929a0ea7Df2ED821d73dbA529316A",
       abi: [
         {
           inputs: [
