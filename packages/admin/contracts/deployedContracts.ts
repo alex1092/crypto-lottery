@@ -293,7 +293,7 @@ const deployedContracts = {
   },
   84532: {
     Lottery: {
-      address: "0x08A0cFBE733fA4636eda5b63A97Ab4e9Ec316E3F",
+      address: "0x22F523D3900C8F9B108e3f39448A5837e80180e1",
       abi: [
         {
           inputs: [
@@ -303,8 +303,53 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          stateMutability: "nonpayable",
+          stateMutability: "payable",
           type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "pauseTime",
+              type: "uint256",
+            },
+          ],
+          name: "LotteryPaused",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "resetTime",
+              type: "uint256",
+            },
+          ],
+          name: "LotteryReset",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "startTime",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "duration",
+              type: "uint256",
+            },
+          ],
+          name: "LotteryStarted",
+          type: "event",
         },
         {
           anonymous: false,
@@ -331,6 +376,25 @@ const deployedContracts = {
             {
               indexed: true,
               internalType: "address",
+              name: "buyer",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "numTickets",
+              type: "uint256",
+            },
+          ],
+          name: "TicketBought",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
               name: "winner",
               type: "address",
             },
@@ -342,6 +406,25 @@ const deployedContracts = {
             },
           ],
           name: "WinnerPicked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "recipient",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
+          ],
+          name: "Withdrawn",
           type: "event",
         },
         {
@@ -398,11 +481,6 @@ const deployedContracts = {
               name: "",
               type: "uint256",
             },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
           ],
           stateMutability: "view",
           type: "function",
@@ -441,6 +519,19 @@ const deployedContracts = {
               internalType: "address[]",
               name: "",
               type: "address[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "isLotteryActive",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
             },
           ],
           stateMutability: "view",
@@ -487,6 +578,32 @@ const deployedContracts = {
         },
         {
           inputs: [],
+          name: "pauseLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          name: "pendingWithdrawals",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
           name: "pickWinner",
           outputs: [],
           stateMutability: "nonpayable",
@@ -519,6 +636,13 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "startLottery",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "address",
@@ -527,6 +651,32 @@ const deployedContracts = {
             },
           ],
           name: "tickets",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalPendingWithdrawals",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalTickets",
           outputs: [
             {
               internalType: "uint256",
@@ -553,20 +703,33 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          name: "winners",
-          outputs: [
-            {
               internalType: "address",
               name: "",
               type: "address",
             },
           ],
+          name: "uniquePlayers",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
           stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_to",
+              type: "address",
+            },
+          ],
+          name: "withdraw",
+          outputs: [],
+          stateMutability: "nonpayable",
           type: "function",
         },
       ],
