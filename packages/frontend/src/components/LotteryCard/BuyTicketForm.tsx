@@ -38,7 +38,9 @@ export const BuyTicketForm = ({ address, onReceipt }: BuyTicketFormProps) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      const transaction = await prepareToBuyTicket(address, values.total);
+      const total = Number(form.watch("total")) * 0.001;
+
+      const transaction = await prepareToBuyTicket(total.toString());
       console.log("Prepared to buy ticket");
 
       const transactionResult = await sendTransaction({

@@ -16,12 +16,12 @@ export const ActiveAccountContent = ({
   const [usersTotalTickets, setUsersTotalTickets] = useState(0);
   const [usersTotalTicketValue, setUsersTotalTicketValue] = useState(0);
 
-  useEffect(() => {
-    getTicketInfoForAddress(address).then((res) => {
-      setUsersTotalTickets(Number(res[0]));
-      setUsersTotalTicketValue(Number(res[1]));
-    });
-  }, [address, totalTickets]);
+  // useEffect(() => {
+  //   getTicketInfoForAddress(address).then((res) => {
+  //     setUsersTotalTickets(Number(res[0]));
+  //     setUsersTotalTicketValue(Number(res[1]));
+  //   });
+  // }, [address, totalTickets]);
 
   return (
     <>

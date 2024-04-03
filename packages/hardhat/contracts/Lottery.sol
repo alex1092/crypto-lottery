@@ -29,15 +29,18 @@ contract Lottery is Ownable {
 		emit LotteryStarted(block.timestamp, _lotteryDuration);
 	}
 
-	function buyTicket(uint256 amount) public payable {
-		require(amount >= TICKET_PRICE, "You must send at least 0.001 ether");
-		uint256 numTickets = amount.div(TICKET_PRICE);
-		tickets[msg.sender] = tickets[msg.sender].add(numTickets);
+	function buyTicket() public payable {
+		require(
+			msg.value >= TICKET_PRICE,
+			"You must send at least 0.001 ether"
+		);
+		uint256 numTickets = msg.value / TICKET_PRICE;
+		tickets[msg.sender] = tickets[msg.sender] + numTickets;
 		if (!uniquePlayers[msg.sender]) {
 			uniquePlayers[msg.sender] = true;
 			players.push(msg.sender);
 		}
-		totalTickets = totalTickets.add(numTickets);
+		totalTickets += numTickets;
 
 		emit TicketBought(msg.sender, numTickets);
 	}

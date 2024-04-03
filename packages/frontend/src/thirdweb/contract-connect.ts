@@ -2,7 +2,7 @@ import { getContract, prepareContractCall, toWei } from "thirdweb";
 import { baseSepolia } from "thirdweb/chains";
 import { client } from "./client";
 
-const contractAddress = "0xA3bd04A6bbc929a0ea7Df2ED821d73dbA529316A"
+const contractAddress = "0xad48e299b348f1e2A92A66C26E54eb7f602f0084"
  
 export const LotteryContract = getContract({
   // the client you have created via `createThirdwebClient()`
@@ -59,15 +59,15 @@ export const getTicketInfoForAddress = async (player: string) => {
   });
 }
 
-export const prepareToBuyTicket = async (address: string, total: string) => {
+export const prepareToBuyTicket = async (total: string) => {
   return prepareContractCall({
   contract: LotteryContract,
   // Pass the method signature that you want to call
-  method: "function buyTicket(address to, uint256 amount)",
+  method: "function buyTicket(uint256 amount) public payable",
   // and the params for that method
   // Their types are automatically inferred based on the method signature
   // params: [address, toWei((Number(total) * 0.001).toString())],
-  params: [address, toWei("0.001")],
+  params: [toWei(total)],
 
 });
 } 

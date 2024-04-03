@@ -14,12 +14,13 @@ import {
   getTotalPrizePool,
   getTotalTickets,
 } from "@/thirdweb/contract-connect";
-import { useActiveAccount } from "thirdweb/react";
+import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { useCallback, useEffect, useState } from "react";
 
 import { ActiveAccountContent } from "./ActiveAccountContent";
 import { BuyTicketForm } from "./BuyTicketForm";
 import { TransactionReceipt } from "thirdweb/transaction";
+import { client } from "@/thirdweb/client";
 
 const LotteryCard = () => {
   const [totalTickets, setTotalTickets] = useState(0);
@@ -65,8 +66,8 @@ const LotteryCard = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Total Tickets: {totalTickets}</p>
-        <p>Total Prize: {totalPrizePool}</p>
+        <p>Total Tickets Purchased: {totalTickets}</p>
+        <p>Total Prize Pool: {totalPrizePool ?? 0}</p>
 
         {activeAccount && (
           <ActiveAccountContent
@@ -78,11 +79,13 @@ const LotteryCard = () => {
       <CardFooter>
         <div className="flex flex-col gap-4">
           <p> Tickets are 0.001 ETH each </p>
-          {activeAccount && (
+          {activeAccount ? (
             <BuyTicketForm
               address={activeAccount.address}
               onReceipt={handleReceipt}
             />
+          ) : (
+            <ConnectButton client={client} />
           )}
         </div>
       </CardFooter>
