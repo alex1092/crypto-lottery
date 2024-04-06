@@ -36,8 +36,8 @@ jobs:
       - name: Run admin lint
         run: yarn next:lint:admin --max-warnings=0
 
-      - name: Run frontend lint
-        run: yarn next:lint:frontend --max-warnings=0
+      - name: Run frontend-wagmi lint
+        run: yarn next:lint:frontend-wagmi --max-warnings=0
 
       - name: Check typings on nextjs
         run: yarn next:check-types:admin

@@ -293,7 +293,7 @@ const deployedContracts = {
   },
   84532: {
     Lottery: {
-      address: "0xad48e299b348f1e2A92A66C26E54eb7f602f0084",
+      address: "0x328173Dc96270700D677DB2f133c9963480Ea691",
       abi: [
         {
           inputs: [
@@ -454,13 +454,7 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "amount",
-              type: "uint256",
-            },
-          ],
+          inputs: [],
           name: "buyTicket",
           outputs: [],
           stateMutability: "payable",
