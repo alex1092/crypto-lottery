@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Form } from "../ui/form";
@@ -8,7 +7,7 @@ import { Input } from "../ui/input";
 import { lotteryContract } from "@/contracts/contractConfig";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { type BaseError, useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { type BaseError, useAccount, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { utils } from "web3";
 import { z } from "zod";
 
@@ -26,28 +25,10 @@ export const LotteryCard = () => {
     },
   });
 
-  const { address } = useAccount();
+  // const { address } = useAccount();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
     hash,
-  });
-
-  const { data: totalTickets, refetch: refetchTotalTickets } = useReadContract({
-    ...lotteryContract,
-    functionName: "getTotalTickets",
-    args: [],
-  });
-
-  const { data: totalPrizePool, refetch: refetchTotalPrizePool } = useReadContract({
-    ...lotteryContract,
-    functionName: "getTotalPrizePool",
-    args: [],
-  });
-
-  const { data: myTicketInfo, refetch: refetchMyTicketInfo } = useReadContract({
-    ...lotteryContract,
-    functionName: "getMyTicketInfo",
-    args: [address],
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -58,16 +39,10 @@ export const LotteryCard = () => {
 
     writeContract({
       ...lotteryContract,
-      functionName: "buyTicket",
+      functionName: "enter",
       value: BigInt(priceInWei),
     });
   }
-
-  useEffect(() => {
-    refetchTotalTickets();
-    refetchTotalPrizePool();
-    refetchMyTicketInfo();
-  }, [isConfirmed, refetchMyTicketInfo, refetchTotalPrizePool, refetchTotalTickets]);
 
   return (
     <Card>
@@ -76,11 +51,6 @@ export const LotteryCard = () => {
         <CardDescription>A fully decentralized and fair lottery game. Buy a ticket and win big prizes.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Total Tickets Purchased: {totalTickets?.toString()}</p>
-        <p>Total Prize Pool {utils.fromWei(totalPrizePool?.toString() ?? "0", "ether")} ETH</p>
-
-        <p>My tickets {myTicketInfo?.toString() ?? 0}</p>
-
         <p> Tickets are 0.001 ETH each </p>
       </CardContent>
       <CardFooter>
