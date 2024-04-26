@@ -12,12 +12,6 @@ import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteCont
 export const CheckWinningsCard = () => {
   const { address: walletAddress } = useAccount();
 
-  // const router = useRouter();
-
-  // if (!walletAddress) {
-  //   router.push("/");
-  // }
-
   const { data: hash, writeContract } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -70,7 +64,12 @@ export const CheckWinningsCard = () => {
     );
   };
 
-  const totalWinnings = isLoading ? 0 : formatEther(usersWinnings as bigint);
+  const totalWinnings = isLoading ? 0 : formatEther((usersWinnings as bigint) ?? 0);
+
+  if (!walletAddress) {
+    return <p>Connect your wallet to check your winnings</p>;
+  }
+
   return (
     <Card>
       <CardHeader>
