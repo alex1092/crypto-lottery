@@ -1,9 +1,9 @@
 import { createConfig, http } from "wagmi";
-import { baseSepolia, hardhat } from "wagmi/chains";
+import { baseSepolia } from "wagmi/chains";
 import { coinbaseWallet, injected, walletConnect } from "wagmi/connectors";
 
 export const config = createConfig({
-  chains: [hardhat, baseSepolia],
+  chains: [baseSepolia],
   connectors: [
     injected(),
     coinbaseWallet({ appName: "Create Wagmi" }),
@@ -11,7 +11,7 @@ export const config = createConfig({
   ],
   ssr: true,
   transports: {
-    [hardhat.id]: http(),
+    // [hardhat.id]: http(),
 
     [baseSepolia.id]: http(),
   },
