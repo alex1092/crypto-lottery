@@ -62,7 +62,9 @@ export const CheckWinningsCard = () => {
       <>
         <p>Better luck next time champ</p>
         <Link href={"https://careers.mcdonalds.com/"}>
-          <Button variant={"link"}>McDonalds Careers</Button>
+          <Button className="w-full" variant={"link"}>
+            McDonalds Careers
+          </Button>
         </Link>
       </>
     );
