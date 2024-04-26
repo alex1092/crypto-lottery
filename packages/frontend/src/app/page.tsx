@@ -1,4 +1,4 @@
-import { LotteryCard } from "@/components/lotter-card/LotteryCard";
+import { LotteryCard } from "@/components/lottery-card/LotteryCard";
 import Navbar from "@/components/navbar/navbar";
 
 export default function Home() {
