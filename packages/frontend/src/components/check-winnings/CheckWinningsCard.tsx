@@ -64,7 +64,7 @@ export const CheckWinningsCard = () => {
     );
   };
 
-  const totalWinnings = isLoading ? 0 : formatEther(usersWinnings as bigint);
+  const totalWinnings = isLoading ? 0 : formatEther((usersWinnings as bigint) ?? 0);
 
   if (!walletAddress) {
     return <p>Connect your wallet to check your winnings</p>;
