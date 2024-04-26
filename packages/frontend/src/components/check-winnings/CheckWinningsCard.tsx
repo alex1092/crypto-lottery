@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { lotteryContract } from "@/contracts/contractConfig";
@@ -12,11 +12,11 @@ import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteCont
 export const CheckWinningsCard = () => {
   const { address: walletAddress } = useAccount();
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  if (!walletAddress) {
-    router.push("/");
-  }
+  // if (!walletAddress) {
+  //   router.push("/");
+  // }
 
   const { data: hash, writeContract } = useWriteContract();
 
