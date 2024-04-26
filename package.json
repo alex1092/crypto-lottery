@@ -23,6 +23,7 @@
     "hardhat:test": "yarn workspace @se-2/hardhat test",
     "postinstall": "husky install",
     "next:build": "yarn workspace @se-2/admin build",
+    "next:build:frontend": "yarn workspace frontend build",
     "next:check-types": "yarn workspace @se-2/admin check-types",
     "next:format": "yarn workspace @se-2/admin format",
     "next:lint": "yarn workspace @se-2/admin lint",
