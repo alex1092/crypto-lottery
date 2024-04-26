@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 error MinimumEntryFeeNotMet();
-error CooldownPeriodNotOver();
+// error CooldownPeriodNotOver();
 error NoPlayersInLottery();
 error NoWinningsToWithdraw();
 error WithdrawFailed();
@@ -20,11 +20,10 @@ contract LotteryContract is Ownable, ReentrancyGuard {
 	mapping(address => uint256) public winnings;
 	mapping(address => Player) public players;
 	address payable[] public playerAddresses;
-	address payable public winningPlayer;
 	uint256 public immutable MANAGER_PERCENTAGE;
 	uint256 public immutable MINIMUM_ENTRY_FEE;
 	uint256 public lastDrawTimestamp;
-	uint256 public cooldownPeriod;
+	// uint256 public cooldownPeriod;
 
 	event TicketPurchased(address indexed player, uint256 amount);
 	event WinnerPicked(address indexed winner, uint256 amount);
@@ -34,7 +33,7 @@ contract LotteryContract is Ownable, ReentrancyGuard {
 		MANAGER_PERCENTAGE = 5;
 		MINIMUM_ENTRY_FEE = 0.001 ether;
 		lastDrawTimestamp = block.timestamp;
-		cooldownPeriod = 1 days;
+		// cooldownPeriod = 1 days;
 	}
 
 	function enter() external payable {
@@ -55,8 +54,8 @@ contract LotteryContract is Ownable, ReentrancyGuard {
 
 	function pickWinner() external onlyOwner {
 		// Check if the cooldown period is over and if there are players in the lottery
-		if (block.timestamp < lastDrawTimestamp + cooldownPeriod)
-			revert CooldownPeriodNotOver();
+		// if (block.timestamp < lastDrawTimestamp + cooldownPeriod)
+		// 	revert CooldownPeriodNotOver();
 		if (playerAddresses.length == 0) revert NoPlayersInLottery();
 
 		// Calculate the total amount of all entries
@@ -124,20 +123,6 @@ contract LotteryContract is Ownable, ReentrancyGuard {
 		(bool success, ) = msg.sender.call{ value: amount }("");
 		if (!success) revert WithdrawFailed();
 		emit WinningsClaimed(msg.sender, amount);
-	}
-
-	function claimWinnings() external nonReentrant {
-		require(
-			msg.sender == winningPlayer,
-			"Only the winning player can claim the prize"
-		);
-		uint256 winningAmount = players[msg.sender].amount;
-		require(winningAmount > 0, "No winnings to claim");
-
-		(bool success, ) = payable(msg.sender).call{ value: winningAmount }("");
-		require(success, "Transfer failed.");
-		players[msg.sender].amount = 0;
-		emit WinningsClaimed(msg.sender, winningAmount);
 	}
 
 	function getPlayers() public view returns (address payable[] memory) {

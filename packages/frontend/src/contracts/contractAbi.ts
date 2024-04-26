@@ -6,11 +6,6 @@ export const LotteryContractABI = [
   },
   {
     inputs: [],
-    name: "CooldownPeriodNotOver",
-    type: "error",
-  },
-  {
-    inputs: [],
     name: "MinimumEntryFeeNotMet",
     type: "error",
   },
@@ -121,26 +116,6 @@ export const LotteryContractABI = [
   {
     inputs: [],
     name: "MINIMUM_ENTRY_FEE",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "claimWinnings",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "cooldownPeriod",
     outputs: [
       {
         internalType: "uint256",
@@ -297,19 +272,6 @@ export const LotteryContractABI = [
     name: "transferOwnership",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "winningPlayer",
-    outputs: [
-      {
-        internalType: "address payable",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {

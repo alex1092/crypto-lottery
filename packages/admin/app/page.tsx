@@ -24,7 +24,7 @@ const Home: NextPage = () => {
           <p className="text-center text-lg">
             Get started by editing{" "}
             <code className="italic bg-base-300 text-base font-bold max-w-full break-words break-all inline-block">
-              packages/nextjs/app/page.tsx
+              packages/admin/app/page.tsx
             </code>
           </p>
           <p className="text-center text-lg">
