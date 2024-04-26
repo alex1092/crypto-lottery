@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { lotteryContract } from "@/contracts/contractConfig";
@@ -10,6 +11,12 @@ import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteCont
 
 export const CheckWinningsCard = () => {
   const { address: walletAddress } = useAccount();
+
+  const router = useRouter();
+
+  if (!walletAddress) {
+    router.push("/");
+  }
 
   const { data: hash, writeContract } = useWriteContract();
 
@@ -24,7 +31,6 @@ export const CheckWinningsCard = () => {
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!walletAddress) return;
-
     writeContract({
       ...lotteryContract,
       functionName: "withdrawWinnings",

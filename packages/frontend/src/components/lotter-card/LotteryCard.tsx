@@ -7,9 +7,10 @@ import { Form } from "../ui/form";
 import { Input } from "../ui/input";
 import { lotteryContract } from "@/contracts/contractConfig";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useForm } from "react-hook-form";
 import { formatEther } from "viem";
-import { type BaseError, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import { type BaseError, useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { utils } from "web3";
 import { z } from "zod";
 
@@ -19,6 +20,9 @@ const formSchema = z.object({
 
 export const LotteryCard = () => {
   const { data: hash, writeContract, isPending, error } = useWriteContract();
+  const account = useAccount();
+
+  const { openConnectModal } = useConnectModal();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,6 +45,13 @@ export const LotteryCard = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!account.address) {
+      {
+        openConnectModal && openConnectModal();
+      }
+      return;
+    }
+
     const ticketPrice = Number(values.total) * 0.001;
     const priceInWei = utils.toWei(ticketPrice?.toString(), "ether");
 
