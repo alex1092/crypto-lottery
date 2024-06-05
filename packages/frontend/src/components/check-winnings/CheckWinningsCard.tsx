@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { lotteryContract } from "@/contracts/contractConfig";
