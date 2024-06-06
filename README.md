@@ -12,6 +12,8 @@ frontend is the customer facing site
 
 hardhat is where we deploy our solidity contracts
 
+link to live site [here](https://crypto-lottery-ffap.netlify.app/)
+
 ## Quick start 
 
 first things first we need our dependencies
